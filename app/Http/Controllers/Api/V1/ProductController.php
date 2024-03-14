@@ -1,10 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Product;
+use App\Models\Tag;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 
 class ProductController extends Controller
 {
@@ -35,15 +38,20 @@ class ProductController extends Controller
         $product->product_description = $request->product_description;
         $product->save();
 
-        return "Hello world";
+        return "Product saved";
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+        // $product = Product::find($id);
+        //$product = Product::with('tags')->find($id);
+
+        $product = Product::find(1)->tags;
+
+        return response()->json($product);
     }
 
     /**
@@ -59,7 +67,6 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
     }
 
     /**

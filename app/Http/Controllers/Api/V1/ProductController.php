@@ -33,18 +33,14 @@ class ProductController extends Controller
     // filter code in index function
     public function index(Request $request)
     {
-        //return Product::all();
-        // $product = Product::all();
-        // return response()->json($product);
 
-        //return ProductResource::collection(Product::all());
-        //return ProductResource::collection(Product::paginate());
 
         $filter = new ProductFilter;
         $filter_result = $filter->transform($request);
         //return response($filter_result);
 
         $product = Product::where('price', '=', 10)->get();
+        //$product = Product::where($filter_result[0]key, '=', $filter_result[0]value)->get();
         return response($product);
     }
 

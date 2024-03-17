@@ -9,10 +9,20 @@ class ProductFilter
 
     public function transform(Request $request)
     {
-        // accept query parameters
+        // $query_array = [];
+        // $query_array = ['price', '10'];
+        // return $query_array;
 
+        $queryParameters = $request->query();
+        $price = $request->query('price');
+        $queryArray = [];
+        foreach ($queryParameters as $key => $value) {
+            // Do something with each query parameter if needed
+            $queryArray[$key] = $value;
+        }
 
-        // return array for query in database
-        return "hello world";
+        return $queryArray;
+
+        //return $price;
     }
 }

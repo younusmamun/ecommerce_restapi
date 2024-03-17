@@ -8,15 +8,44 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use App\Http\Resources\V1\ProductResource;
+use Illuminate\Http\Request;
+use App\Filters\V1\ProductFilter;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    // public function index()
+    // {
+    //     //return Product::all();
+    //     // $product = Product::all();
+    //     // return response()->json($product);
+
+    //     return ProductResource::collection(Product::all());
+    //     //return ProductResource::collection(Product::paginate());
+
+    // }
+
+
+
+    // filter code in index function
+    public function index(Request $request)
     {
-        return Product::all();
+        //return Product::all();
+        // $product = Product::all();
+        // return response()->json($product);
+
+        //return ProductResource::collection(Product::all());
+        //return ProductResource::collection(Product::paginate());
+
+        $filter = new ProductFilter;
+        $filter_result = $filter->transform($request);
+        //return response($filter_result);
+
+        $product = Product::where('price', '=', 10)->get();
+        return response($product);
     }
 
     /**
@@ -46,12 +75,14 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        // $product = Product::find($id);
+        //$product = Product::find($id);
         //$product = Product::with('tags')->find($id);
 
-        $product = Product::find(1)->tags;
+        //$product = Product::find(1)->tags;
 
-        return response()->json($product);
+        //return response()->json($product);
+
+        return new ProductResource(Product::findOrFail($id));
     }
 
     /**
